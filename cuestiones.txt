@@ -1,0 +1,5 @@
+3.3 
+ a) Creo que son 6
+ b) Da el siguiente error: /tmp/ccrBRCJA.o: In function `main':
+    circulo2.c:(.text+0x1d): undefined reference to `area'
+    collect2: error: ld devolvió el estado de salida 1
