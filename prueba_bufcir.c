@@ -4,10 +4,12 @@
 // Main
 main () {
  int i, *x;
+ struct Buffer_Circ bf;
  struct Buffer_Circ *p;
- initbufer();
 
- p = &C;
+ p = &bf;
+ initbuffer(p);
+
  // 5 inserciones de datos
  ok = put_item( 11, p );
  ok = put_item( 22, p );

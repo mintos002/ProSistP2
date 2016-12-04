@@ -1,32 +1,24 @@
 #include <stdio.h>
 
 #define BUFSIZE 10
-#define true 1
-#define false 0
 
-int ok, *x;
+int ok, *x; // definir ok y *x
 
-struct Buffer_Circ {
+struct Buffer_Circ {  // Definir estructura Buffer_Circ
  int buffer[BUFSIZE];
  int bufIN, bufOUT;
  int contador;
- bufIN=0;
- bufOUT=0;
- contador=0;
 };
 
-struct Buffer_Circ C;
-
 // Iniciar bufer
-void initbufer() {
+void initbuffer( struct Buffer_Circ *buff) {
  int i;
  for(i=0; i<BUFSIZE; i++){
-   //C.buffer[i] = (i + 1) % BUFSIZE;
-  C.buffer[i] = -1;
+  (*buff).buffer[i] = -1;
   }
- C.bufIN = 0;
- C.bufOUT = 0;
- C.contador = 0;
+ (*buff).bufIN = 0;
+ (*buff).bufOUT = 0;
+ (*buff).contador = 0;
 }
 
 // Get item
@@ -35,7 +27,7 @@ int get_item(int *x, struct Buffer_Circ *buff) {
 
  if( (*buff).contador > 0){           // Si el buffer no esta vacio
    x = &(*buff).buffer[nxtOUT];       // Asignar resultado a x
-   (*buff).bufOUT = (nxtOUT + 1) % BUFSIZE;            // Actualizar bufOUT
+   (*buff).bufOUT = (nxtOUT + 1) % BUFSIZE; // Actualizar bufOUT
    (*buff).contador = (*buff).contador - 1; // Actualizar contador
    return 0;                         // Devolver 0 -> OK
   }
@@ -62,11 +54,19 @@ int put_item(int x, struct Buffer_Circ *buff) {
 }
 
 // Consultar si una variable Buffer_Circ está vacía
-bool bc_vacio(struct Buffer_Circ *buff){
+int bc_vacio(struct Buffer_Circ *buff){
  if( (*buff).contador == 0 ) {
-  return false;
+  return 0;
  }
 }
+
+// Consultar si una variable Buffer_Circ está vacía
+int bc_lleno(struct Buffer_Circ *buff){
+ if( (*buff).contador != 0 ) {
+  return 1;
+ }
+}
+
 
 //PRINT
 void print (struct Buffer_Circ *buff){
@@ -81,8 +81,7 @@ void print (struct Buffer_Circ *buff){
  printf("------------------------------------------------------------\n");
 }
 
-main(){
- struct Buffer_Circ akan, *ppp;
- ppp = &akan;
- print(ppp);
+// Devolver número de elementos
+int num_elementos (struct Buffer_Circ *buff){
+ return (*buff).contador;
 }
