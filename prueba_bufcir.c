@@ -3,12 +3,23 @@
 
 // Main
 main () {
- int i, *x;
+ int i, c, *x;
  struct Buffer_Circ bf;
  struct Buffer_Circ *p;
+ char * akan;
 
  p = &bf;
  initbuffer(p);
+ // print
+ print(p);
+ // prueba metodos ---
+ akan = bc_vacio(p);
+ printf("Bucle vacio?: %s\n", akan); 
+ akan = bc_lleno(p);
+ printf("Bucle lleno?: %s\n", akan);
+ c = num_elementos(p);
+ printf("Numero de elementos: %d\n" ,c);
+ printf("------------------------------\n");
 
  // 5 inserciones de datos
  ok = put_item( 11, p );
@@ -35,6 +46,15 @@ main () {
  printf("5 inserciones.\n");
  print(p);
 
+ // prueba metodos ---
+ akan = bc_vacio(p);
+ printf("Bucle vacio?: %s\n", akan);
+ akan = bc_lleno(p);
+ printf("Bucle lleno?: %s\n", akan);
+ c = num_elementos(p);
+ printf("Numero de elementos: %d\n",c);
+ printf("------------------------------\n");
+
  // 2 extracciones de datos
  ok = get_item( x, p );
  ok = get_item( x, p );
@@ -50,6 +70,6 @@ main () {
  ok = get_item( x, p );
  printf("1 extracción.\n");
  print(p);
-
+ 
 }
 

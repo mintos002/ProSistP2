@@ -1,51 +1,113 @@
 #include <stdio.h>
+#include <stdbool.h>
 
-#define TAM_FILA 2
-#define NUM_FILAS 4
+#define BUFSIZE 4
 
-struct FILA {
- float datos[TAM_FILA];
- float suma;
+int ok, *x; // definir ok y *x
+
+struct Buffer_Circ {  // Definir estructura Buffer_Circ
+ int buffer[BUFSIZE];
+ int bufIN, bufOUT;
+ int contador;
 };
-//A) Define una variable filas que sea un vector de estructuras FILA de tamaño NUM_FILAS
-struct FILA filas[NUM_FILAS];
 
-void suma_fila(struct FILA *pf){
- // B) Implementar suma_fila
+// Iniciar bufer
+void initbuffer( struct Buffer_Circ *buff) {
  int i;
- float count = 0;
- for(i=0; i<TAM_FILA; i++) {
-  count = (*pf).datos[i] + count;
-
- }
- (*pf).suma = count;
- printf("count: %f", count);
-}
-
-// Inicia las filas con el valor i*j
-void inicia_filas() {
- int i, j;
- for (i=0; i<NUM_FILAS; i++){
-  for (j=0; j<TAM_FILA; j++){
-   filas[i].datos[j]=(float)i+j;
+ for(i=0; i<BUFSIZE; i++){
+  (*buff).buffer[i] = -1;
   }
+ (*buff).bufIN = 0;
+ (*buff).bufOUT = 0;
+ (*buff).contador = 0;
+}
+
+// Get item
+int get_item(int *x, struct Buffer_Circ *buff) {
+ int nxtOUT = (*buff).bufOUT % BUFSIZE;
+
+ if( (*buff).contador > 0){           // Si el buffer no esta vacio
+   x = &(*buff).buffer[nxtOUT];       // Asignar resultado a x
+   (*buff).bufOUT = (nxtOUT + 1) % BUFSIZE; // Actualizar bufOUT
+   (*buff).contador = (*buff).contador - 1; // Actualizar contador
+   return 0;                         // Devolver 0 -> OK
+  }
+ else {                              // Si buffer esta lleno
+  return -1;                         // Devolver -1 -> NOT OK
+ }
+
+}
+
+// Put item
+int put_item(int x, struct Buffer_Circ *buff) {
+ int nxtIN = (*buff).bufIN % BUFSIZE;
+
+ if( (*buff).contador < BUFSIZE ){   // Si el buffer esta vacio
+  (*buff).buffer[nxtIN] = x;        // Insertar x
+  (*buff).bufIN = (nxtIN + 1) % BUFSIZE;// Actualizar bufIN
+  (*buff).contador = (*buff).contador + 1; // Actualizar contador
+  return 0;                         // Devolver 0 -> OK
+
+ }
+ else {                              // Si buffer esta lleno
+  return -1;                         // Devolver -1 -> NOT OK
  }
 }
 
-main(){
- int i;
- float suma_total;
 
- inicia_filas();
- // C) Completar bucle
- suma_total = 0;
- for (i = 0; i<NUM_FILAS; i++){
-  // Llamar a suma_fila
-  struct FILA *pf;
-  pf = &filas[i];
-  suma_fila(pf);
-  printf("La fila %u es %f %f :: %f\n", i, filas[i].datos[0],filas[i].datos[1],filas[i].suma);
-  // Sumar la fila a suma_total
+// Consultar si una variable Buffer_Circ está vacía
+char* bc_vacio(struct Buffer_Circ *buff){
+ if( (*buff).contador == 0 ) {
+  return "True";
+ } else {
+  return "False";
  }
- printf("La suma final es %f\n", suma_total);
+}
+
+// Consultar si una variable Buffer_Circ está lleno
+char* bc_lleno(struct Buffer_Circ *buff){
+ if( (*buff).contador != 0 ) {
+  return "True";
+ } else {
+  return "False";
+ }
+}
+
+//PRINT
+void print (struct Buffer_Circ *buff){
+// printf("OK? = %d\n", ok );
+ printf("bufIN = %d\n", (*buff).bufIN );
+ printf("bufOUT = %d\n", (*buff).bufOUT );
+ printf("contador = %d\n", (*buff).contador );
+ int i;
+ for(i=0; i<BUFSIZE; i++){
+  printf("Posicion %d valor: %d\n", i, (*buff).buffer[i] );
+ }
+ printf("------------------------------------------------------------\n");
+}
+
+// Devolver número de elementos
+int num_elementos (struct Buffer_Circ *buff){
+ return (*buff).contador;
+}
+
+void main(void){
+ struct Buffer_Circ buff, *p;
+ char* a;
+ 
+ p=&buff;
+ initbuffer(p);
+
+ print(p);
+
+ a = bc_vacio(p);
+ printf("está vacio?: %s\n", a);
+ sleep(1);
+ put_item(-13,p);
+ put_item(-13,p);
+ put_item(-13,p);
+ print(p);
+ a = bc_lleno(p);
+ printf("está lleno?: %s\n", a);
+ 
 }

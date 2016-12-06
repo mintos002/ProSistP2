@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #define BUFSIZE 10
 
@@ -54,23 +55,27 @@ int put_item(int x, struct Buffer_Circ *buff) {
 }
 
 // Consultar si una variable Buffer_Circ está vacía
-int bc_vacio(struct Buffer_Circ *buff){
+char * bc_vacio(struct Buffer_Circ *buff){
  if( (*buff).contador == 0 ) {
-  return 0;
+  return "True";
+ } else {
+  return "False";
  }
 }
 
-// Consultar si una variable Buffer_Circ está vacía
-int bc_lleno(struct Buffer_Circ *buff){
- if( (*buff).contador != 0 ) {
-  return 1;
+// Consultar si una variable Buffer_Circ está lleno
+
+char * bc_lleno(struct Buffer_Circ *buff){
+ if( (*buff).contador == BUFSIZE ) {
+  return "True";
+ } else {
+  return "False";
  }
 }
-
 
 //PRINT
 void print (struct Buffer_Circ *buff){
- printf("OK? = %d\n", ok );
+// printf("OK? = %d\n", ok );
  printf("bufIN = %d\n", (*buff).bufIN );
  printf("bufOUT = %d\n", (*buff).bufOUT );
  printf("contador = %d\n", (*buff).contador );
