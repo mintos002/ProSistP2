@@ -27,7 +27,7 @@ int get_item(int *x, struct Buffer_Circ *buff) {
  int nxtOUT = (*buff).bufOUT % BUFSIZE;
 
  if( (*buff).contador > 0){           // Si el buffer no esta vacio
-   x = &(*buff).buffer[nxtOUT];       // Asignar resultado a x
+   *x = (*buff).buffer[nxtOUT];       // Asignar resultado a x
    (*buff).bufOUT = (nxtOUT + 1) % BUFSIZE; // Actualizar bufOUT
    (*buff).contador = (*buff).contador - 1; // Actualizar contador
    return 0;                         // Devolver 0 -> OK
